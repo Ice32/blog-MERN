@@ -25,9 +25,11 @@
   "homepage": "https://github.com/Ice32/blog-MERN#readme",
   "dependencies": {
     "express": "^4.13.4",
+    "jquery": "^2.2.0",
     "mongodb": "^2.1.7",
     "react": "^0.14.7",
-    "react-dom": "^0.14.7"
+    "react-dom": "^0.14.7",
+    "react-router": "^2.0.0"
   },
   "devDependencies": {
     "babel-loader": "^6.2.3",

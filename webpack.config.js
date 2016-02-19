@@ -7,14 +7,11 @@ module.exports = {
         path:__dirname + "/static",
         filename:"bundle.js"
     },
+    watch:true,
+    devtool:"eval-source-map",
     module:{
         loaders:[{
-                test: /\.jsx?$/,
-                loaders:['babel'],
-                exclude:[/node_modules/]
-            },
-            {
-                test: /\.jsx?$/,
+                test: /\.(js|jsx)$/,
                 loaders:['babel'],
                 exclude:[/node_modules/]
             }]
