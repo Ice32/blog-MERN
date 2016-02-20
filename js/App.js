@@ -10,11 +10,17 @@ import AddPost from "./Components/AddPost";
 import Post from "./Components/Post";
 import PostView from "./Components/PostView";
 
+import injectTapEventPlugin from "react-tap-event-plugin";
+injectTapEventPlugin();
+
 class App extends React.Component {
+    constructor(props){
+        super(props);
+    }
     render(){
         console.log("rendering app component");
         return(<div>
-            <Front />
+            <Front/>
         </div>)
     }
 }

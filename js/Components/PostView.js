@@ -5,6 +5,14 @@ import React from "react";
 import $ from "jquery";
 import {Link} from "react-router";
 
+import RaisedButton from 'material-ui/lib/raised-button';
+import Card from 'material-ui/lib/card/card';
+import CardHeader from 'material-ui/lib/card/card-header';
+import CardTitle from 'material-ui/lib/card/card-title';
+import CardText from 'material-ui/lib/card/card-text';
+import CardActions from 'material-ui/lib/card/card-actions';
+import TextField from 'material-ui/lib/text-field';
+
 export default class PostView extends React.Component {
     constructor(props){
         super(props);
@@ -80,25 +88,35 @@ export default class PostView extends React.Component {
         console.log("rendering PostView component");
         if(this.state.editMode){
             return(
-                <div>
-                    <input type="text" value={this.state.title} onChange={this.titleEdit.bind(this)}/><br />
-                    <textarea value={this.state.text} onChange={this.textEdit.bind(this)}/><br />
-                    <button onClick={this.editModeOff.bind(this)}>Cancel </button>
-                    <button onClick={this.editSubmit.bind(this)}>Done</button>
-                    <button onClick={this.deletePost.bind(this)}>Delete</button>
-                    <Link to="/"><button>Home</button></Link>
-                </div>
+                <Card>
+                    <CardHeader>
+                        <TextField style={{fontSize:"30px"}} value={this.state.title} onChange={this.titleEdit.bind(this)}/><br />
+                    </CardHeader>
+                    <CardText>
+                        <TextField multiLine={true} fullWidth={true} value={this.state.text} onChange={this.textEdit.bind(this)}/><br />
+                    </CardText>
+                    <CardActions>
+                        <RaisedButton onTouchTap={this.editModeOff.bind(this)} secondary={true} label="Cancel" style={{marginRight:3}}/>
+                        <RaisedButton onTouchTap={this.editSubmit.bind(this)} secondary={true} label="Done" style={{marginRight:3}}/>
+                        <RaisedButton onTouchTap={this.deletePost.bind(this)} secondary={true} label="Delete" style={{marginRight:3}}/>
+                        <Link to="/"><RaisedButton label="Home" secondary={true}/></Link>
+                    </CardActions>
+                </Card>
             )
         }
         else{
             return(
-                <div>
-                    <h3>{this.state.title}</h3>
-                    <p>{this.state.text}</p>
-                    <button onClick={this.editModeOn.bind(this)}>Edit</button>
-                    <button onClick={this.deletePost.bind(this)}>Delete</button>
-                    <Link to="/"><button>Home</button></Link>
-                </div>
+                <Card>
+                    <CardHeader style={{marginTop:15}} title={this.state.title} titleStyle={{fontSize:"30px"}}/>
+                    <CardText >
+                        {this.state.text}
+                    </CardText>
+                    <CardActions>
+                        <RaisedButton onTouchTap={this.editModeOn.bind(this)} label="Edit" secondary={true} style={{marginRight:3}}/>
+                        <RaisedButton onTouchTap={this.deletePost.bind(this)} label="Delete" secondary={true} style={{marginRight:3}}/>
+                        <Link to="/"><RaisedButton label="Home" secondary={true} style={{marginRight:3}}/></Link>
+                    </CardActions>
+                </Card>
             )
         }
     }

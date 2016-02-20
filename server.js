@@ -14,7 +14,7 @@ app.use(express.static("static"));
 app.use(bodyParser.json());
 
 app.get("/api/posts", function(req, res){
-    db.collection("posts").find().toArray(function(err, docs){
+    db.collection("posts").find().sort({dateCreated:-1}).toArray(function(err, docs){
         res.json(docs);
     })
 });
