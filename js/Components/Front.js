@@ -4,6 +4,7 @@
 import React from "react";
 import $ from "jquery";
 import Post from "./Post";
+import {Link} from "react-router";
 
 export default class Front extends React.Component {
     constructor(props){
@@ -17,7 +18,6 @@ export default class Front extends React.Component {
             url:"/api/posts",
             contentType:"application/json",
             success:function(data){
-                console.log(data);
                 this.setState({data:data});
             }.bind(this),
             error:function(xhr, status, error){
@@ -30,13 +30,15 @@ export default class Front extends React.Component {
         loadData();
     }
     render(){
+        let self = this;
         let data = this.state.data.map(function(value, index, array){
-            return <Post title={value.title} text={value.text}/>
+            return <Post key={value._id} data={value} loadData={self.loadData.bind(self)}/>
         });
+        console.log("rendering Front component");
         return(
             <div>
                 <h1>BLOG - MERN</h1>
-                <button>+ ADD</button>
+                <Link to="/add"><button>+ ADD</button></Link>
                 {data}
             </div>
         )
