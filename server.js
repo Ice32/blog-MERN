@@ -38,8 +38,28 @@ app.delete("/api/posts", function(req, res){
     });
 });
 
+app.get("/api/posts/:id", function(req, res){
+    console.log(req.params.id);
+   db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
+       if(err){
+           console.error(err);
+           res.sendStatus(400);
+       }
+       else{
+           res.json(doc);
+       }
+   })
+});
+
 MongoClient.connect("mongodb://localhost:27017/postdb", function(err, dbConnection){
     db = dbConnection;
+    db.collection("posts").count({}, function(e, count){
+        if(count < 3){
+            for(let i = 0; i < 10; i++ ){
+                db.collection("posts").insertOne({title:"post title", text:"post text post text post text"})
+            }
+        }
+    });
     app.listen(3000, function(){
         console.log("Listening on port 3000");
     });

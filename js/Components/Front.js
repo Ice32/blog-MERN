@@ -32,7 +32,7 @@ export default class Front extends React.Component {
     render(){
         let self = this;
         let data = this.state.data.map(function(value, index, array){
-            return <Post key={value._id} data={value} loadData={self.loadData.bind(self)}/>
+            return <Post index={index+1} key={value._id} data={value} loadData={self.loadData.bind(self)}/>
         });
         console.log("rendering Front component");
         return(

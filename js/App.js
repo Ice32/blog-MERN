@@ -7,6 +7,8 @@ import {Router, hashHistory, Route} from "react-router";
 
 import Front from "./Components/Front";
 import AddPost from "./Components/AddPost";
+import Post from "./Components/Post";
+import PostView from "./Components/PostView";
 
 class App extends React.Component {
     render(){
@@ -21,6 +23,7 @@ render((
     <Router history={hashHistory}>
         <Route path="/" component={App}/>
         <Route path="add" component={AddPost} />
+        <Route path="/posts/:id" component={PostView} />
     </Router>
 ),
     document.getElementById("root"));
