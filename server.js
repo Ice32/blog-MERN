@@ -31,15 +31,12 @@ app.post("/api/posts", function(req, res){
 });
 
 app.delete("/api/posts", function(req, res){
-    console.log(req.body);
     db.collection("posts").removeOne({_id:ObjectID(req.body.id)}, function(err, result){
-        console.log(result);
         res.sendStatus(200);
     });
 });
 
 app.get("/api/posts/:id", function(req, res){
-    console.log(req.params.id);
    db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
        if(err){
            console.error(err);
@@ -47,6 +44,19 @@ app.get("/api/posts/:id", function(req, res){
        }
        else{
            res.json(doc);
+       }
+   })
+});
+
+app.put("/api/posts/:id", function(req, res){
+   db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
+       if(doc.title == req.body.title && doc.text == req.body.text){
+           console.log("not changed");
+           res.sendStatus(304);
+       }
+       else{
+           db.collection("posts").updateOne({_id:doc._id}, req.body)
+           res.sendStatus(200);
        }
    })
 });

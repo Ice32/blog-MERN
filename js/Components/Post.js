@@ -13,7 +13,6 @@ export default class Post extends React.Component{
         let data = {
             id:this.props.data._id
         };
-        console.log("sending id" , data.id);
         $.ajax({
             type:"DELETE",
             url:"/api/posts",
@@ -23,12 +22,10 @@ export default class Post extends React.Component{
                 console.log("delete success");
                 console.log("delete is triggering data loading for post", data.id);
                 this.props.loadData();
-
             }.bind(this),
             error:function(xhr, status, error){
                 console.error(status, error.toString());
             }
-
         })
     }
     render(){

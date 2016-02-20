@@ -34,7 +34,8 @@ export default class AddPost extends React.Component{
             type:"POST",
             contentType:"application/json",
             success:function(){
-                this.setState({newTitle:"", newText:""})
+                this.setState({newTitle:"", newText:""});
+                this.context.router.replace("/");
             }.bind(this),
             error:function(xhr, status, error){
                 console.error(status, error.toString());
@@ -53,3 +54,7 @@ export default class AddPost extends React.Component{
         )
     }
 }
+
+AddPost.contextTypes  = {
+    router: React.PropTypes.object.isRequired
+};
