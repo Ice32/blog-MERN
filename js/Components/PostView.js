@@ -22,11 +22,13 @@ export default class PostView extends React.Component {
             editMode:false,
             justEdited:false,
             justDeleted:false,
-            dialogOpen:false
+            confirmDeletionDialog:false,
+            lengthDialog:false,
+            titleLengthDialog:false
         }
     }
     deletePost(){
-        this.setState({dialogOpen:false});
+        this.setState({confirmDeletionDialog:false});
         let data = {
             id:this.props.params.id
         };
@@ -61,9 +63,19 @@ export default class PostView extends React.Component {
         loadData();
     }
     titleEdit(e){
+        if(e.target.value.length > 50){
+            this.setState({titleLengthDialog:true});
+            console.log("too loong");
+            return false;
+        }
         this.setState({title:e.target.value})
     }
     textEdit(e){
+        if(e.target.value.length > 2000){
+            this.setState({lengthDialog:true});
+            console.log("too loong");
+            return false;
+        }
         this.setState({text:e.target.value})
     }
     editSubmit(){
@@ -80,6 +92,7 @@ export default class PostView extends React.Component {
                 this.setState({editMode:false, preEditTitle:this.state.title, preEditText:this.state.text, justEdited:true})
             }.bind(this),
             error:function(xhr, status, error){
+                //console.error("xhr status code is ", xhr.status);
                 console.error(status, error.toString());
             }
         })
@@ -98,13 +111,13 @@ export default class PostView extends React.Component {
         this.context.router.replace("/");
     }
     openDialog(){
-        this.setState({dialogOpen:true});
+        this.setState({confirmDeletionDialog:true});
     }
     render(){
         console.log("rendering PostView component");
         const dialogActions = [
             <RaisedButton label="Confirm" secondary={true} onTouchTap={this.deletePost.bind(this)} style={{marginRight:3}}/> ,
-            <RaisedButton label="Cancel" secondary={true} onTouchTap={() => {this.setState({dialogOpen:false})}}/>
+            <RaisedButton label="Cancel" secondary={true} onTouchTap={() => {this.setState({confirmDeletionDialog:false})}}/>
         ];
         if(this.state.editMode){
             return(
@@ -113,7 +126,7 @@ export default class PostView extends React.Component {
                         <TextField style={{fontSize:"30px"}} value={this.state.title} onChange={this.titleEdit.bind(this)}/><br />
                     </CardHeader>
                     <CardText>
-                        <TextField multiLine={true} fullWidth={true} value={this.state.text} onChange={this.textEdit.bind(this)}/><br />
+                        <TextField multiLine={true} rowsMax={50} fullWidth={true} value={this.state.text} onChange={this.textEdit.bind(this)}/><br />
                     </CardText>
                     <CardActions>
                         <RaisedButton onTouchTap={this.editModeOff.bind(this)} secondary={true} label="Cancel" style={{marginRight:3}}/>
@@ -121,6 +134,14 @@ export default class PostView extends React.Component {
                         <RaisedButton onTouchTap={this.deletePost.bind(this)} secondary={true} label="Delete" style={{marginRight:3}}/>
                         <Link to="/"><RaisedButton label="Home" secondary={true}/></Link>
                     </CardActions>
+                    {/*Dialog in case post text length is exceeded*/}
+                    <Dialog actions={<RaisedButton primary={true} label="ok" onTouchTap={  () => {this.setState({lengthDialog:false})}          } />} open={this.state.lengthDialog} style={{textAlign:"center"}} onRequestClose={() => { this.setState({lengthDialog:false})}} title="Your post has gotten too long ">
+                        Please make sure not to exceed post character limit of 2000
+                    </Dialog>
+                    {/*Dialog in case title length is exceeded*/}
+                    <Dialog actions={<RaisedButton primary={true} label="ok" onTouchTap={  () => {this.setState({titleLengthDialog:false});}      } />} open={this.state.titleLengthDialog} style={{textAlign:"center"}} onRequestClose={() => { this.setState({titleLengthDialog:false})}} title="Your title has gotten too long ">
+                        Please make sure not to exceed title character limit of 50
+                    </Dialog>
                 </Card>
             )
         }
@@ -138,7 +159,7 @@ export default class PostView extends React.Component {
                     </CardActions>
                     <Snackbar open={this.state.justEdited} message="Post successfully edited" bodyStyle={{textAlign:"center"}} autoHideDuration={3000} onRequestClose={this.closeEditSnackbar.bind(this)}/>
                     <Snackbar open={this.state.justDeleted} message="Post deleted, redirecting back to home..." bodyStyle={{textAlign:"center"}} autoHideDuration={2000} onRequestClose={this.closeDeleteSnackbar.bind(this)}/>
-                    <Dialog modal={true} open={this.state.dialogOpen} title="Are you sure you want to delete this post?" actions={dialogActions}/>
+                    <Dialog modal={true} open={this.state.confirmDeletionDialog} title="Are you sure you want to delete this post?" actions={dialogActions}/>
                 </Card>
             )
         }

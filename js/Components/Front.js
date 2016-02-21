@@ -73,7 +73,7 @@ export default class Front extends React.Component {
             <RaisedButton label="Cancel" secondary={true} onTouchTap={() => {this.setState({dialogOpen:false})}}/>
         ];
         let data = this.state.data.map(function(value, index, array){
-            return <Paper style={{padding:5, marginBottom:5}} key={value._id} zDepth={1}>
+            return <Paper style={{padding:5, marginBottom:5, width:"85%"}} key={value._id} zDepth={1}>
                          <Post openDialog={self.openDialog.bind(self)} deletePost={self.deletePost.bind(self)} index={index+1} data={value} />
                     </Paper>
         });

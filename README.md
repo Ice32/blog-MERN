@@ -1,2 +1,4 @@
 # blog-MERN
-WORK IN PROGRESS - example app written in MERN stack
+Example app written in MERN stack (MongodDB, Express, React, NodeJS)
+
+Any suggestions are welcome

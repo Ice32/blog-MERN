@@ -21,12 +21,14 @@ app.get("/api/posts", function(req, res){
 
 app.post("/api/posts", function(req, res){
     let newPost = req.body;
+    if(newPost.text.length > 2000 || newPost.title.length > 50){
+        return res.sendStatus(400);
+    }
     db.collection("posts").insertOne(newPost, function(error, result){
         if(error){
-            return console.log(error);
+            return console.error(error);
         }
         res.sendStatus(200);
-
     });
 });
 
@@ -50,6 +52,9 @@ app.get("/api/posts/:id", function(req, res){
 
 app.put("/api/posts/:id", function(req, res){
     let newPost = req.body;
+    if(req.body.text.length > 2000 || req.body.title.length > 50 ){
+        return res.sendStatus(400);
+    }
    db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
        if(doc.title == req.body.title && doc.text == req.body.text){
            console.log("not changed");
@@ -57,7 +62,7 @@ app.put("/api/posts/:id", function(req, res){
        }
        else{
            newPost.dateCreated = doc.dateCreated;
-           db.collection("posts").updateOne({_id:doc._id},newPost)
+           db.collection("posts").updateOne({_id:doc._id},newPost);
            res.sendStatus(200);
        }
    })
