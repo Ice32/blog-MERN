@@ -49,13 +49,15 @@ app.get("/api/posts/:id", function(req, res){
 });
 
 app.put("/api/posts/:id", function(req, res){
+    let newPost = req.body;
    db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
        if(doc.title == req.body.title && doc.text == req.body.text){
            console.log("not changed");
            res.sendStatus(304);
        }
        else{
-           db.collection("posts").updateOne({_id:doc._id}, req.body)
+           newPost.dateCreated = doc.dateCreated;
+           db.collection("posts").updateOne({_id:doc._id},newPost)
            res.sendStatus(200);
        }
    })

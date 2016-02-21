@@ -11,8 +11,11 @@ export default class Post extends React.Component{
     constructor(props){
         super(props);
     }
+    shouldComponentUpdate(nextProps, nextState){
+        return nextProps.data !== this.props.data;
+    }
     deletePost(){
-        this.props.deletePost(this.props.data._id);
+        this.props.openDialog(this.props.data._id);
     }
     render(){
         console.log("rendering Post component");
