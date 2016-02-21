@@ -15,13 +15,15 @@ import TextField from 'material-ui/lib/text-field';
 import Avatar from 'material-ui/lib/avatar';
 import FontIcon from 'material-ui/lib/font-icon';
 import {Colors} from 'material-ui/lib/styles';
+import Snackbar from 'material-ui/lib/snackbar';
 
 export default class AddPost extends React.Component{
     constructor(props){
         super(props);
         this.state = {
             newTitle:"",
-            newText:""
+            newText:"",
+            justAdded:false
         }
     }
     titleChange(e){
@@ -46,14 +48,18 @@ export default class AddPost extends React.Component{
             type:"POST",
             contentType:"application/json",
             success:function(){
-                this.setState({newTitle:"", newText:""});
-                this.context.router.replace("/");
+                this.setState({newTitle:"", newText:"", justAdded:true});
             }.bind(this),
             error:function(xhr, status, error){
                 console.error(status, error.toString());
             }
         })
     }
+    closeSnackbar(){
+        this.setState({justAdded:false});
+        this.context.router.replace("/");
+    }
+
     render(){
         console.log("rendering AddPost component");
         return(
@@ -66,9 +72,10 @@ export default class AddPost extends React.Component{
                     <TextField multiLine={true} fullWidth={true} value={this.state.newText} onChange={this.textChange.bind(this)} placeholder="post text"/><br />
                 </CardText>
                 <CardActions>
-                    <RaisedButton secondary={true} onTouchTap={this.submitNewPost.bind(this)} label="Submit post"/>
                     <Link to="/"><RaisedButton secondary={true} label="Home"/></Link>
+                    <RaisedButton secondary={true} onTouchTap={this.submitNewPost.bind(this)} label="Submit post"/>
                 </CardActions>
+                <Snackbar open={this.state.justAdded} message="Post successfully added, redirecting back to home..." onRequestClose={this.closeSnackbar.bind(this)} bodyStyle={{textAlign:"center"}} autoHideDuration={1300}/>
             </Card>
         )
     }

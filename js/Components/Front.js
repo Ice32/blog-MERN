@@ -74,7 +74,7 @@ export default class Front extends React.Component {
                     <RaisedButton style={{marginTop:5}} label="ADD" primary={true}linkButton={true} icon={<FontIcon className="fa fa-plus"/>}/>
                 </Link>
                 {data}
-                <Snackbar open={this.state.justDeleted} message="Post successfully deleted" autoHideDuration={3000} onRequestClose={this.handleRequestClose.bind(this)}/>
+                <Snackbar bodyStyle={{textAlign:"center"}} open={this.state.justDeleted} message="Post successfully deleted" autoHideDuration={3000} onRequestClose={this.handleRequestClose.bind(this)}/>
             </div>
         )
     }
