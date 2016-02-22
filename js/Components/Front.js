@@ -13,6 +13,10 @@ import Paper from 'material-ui/lib/paper';
 import Snackbar from 'material-ui/lib/snackbar';
 import Dialog from 'material-ui/lib/dialog';
 
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+
 export default class Front extends React.Component {
     constructor(props){
         super(props);
@@ -73,18 +77,24 @@ export default class Front extends React.Component {
             <RaisedButton label="Cancel" secondary={true} onTouchTap={() => {this.setState({dialogOpen:false})}}/>
         ];
         let data = this.state.data.map(function(value, index, array){
-            return <Paper style={{padding:5, marginBottom:5, width:"85%"}} key={value._id} zDepth={1}>
-                         <Post openDialog={self.openDialog.bind(self)} deletePost={self.deletePost.bind(self)} index={index+1} data={value} />
-                    </Paper>
+            return <Col lg={9} md={10} sm={12} xs={12} key={value._id}>
+                <Paper style={{padding:5, marginBottom:5}}  zDepth={1}>
+                    <Post openDialog={self.openDialog.bind(self)} deletePost={self.deletePost.bind(self)} index={index+1} data={value} />
+                </Paper>
+            </Col>
         });
         console.log("rendering Front component");
         return(
             <div>
                 <AppBar title="BLOG - MERN" showMenuIconButton={false}/>
-                <Link to="/add">
-                    <RaisedButton style={{marginTop:5}} label="ADD" primary={true}linkButton={true} icon={<FontIcon className="fa fa-plus"/>}/>
-                </Link>
-                {data}
+                <Grid fluid={true}>
+                    <Link to="/add">
+                        <RaisedButton style={{marginTop:5}} label="ADD" primary={true}linkButton={true} icon={<FontIcon className="fa fa-plus"/>}/>
+                    </Link>
+                    <Row>
+                        {data}
+                    </Row>
+                </Grid>
                 <Snackbar bodyStyle={{textAlign:"center"}} open={this.state.justDeleted} message="Post successfully deleted" autoHideDuration={3000} onRequestClose={this.handleRequestClose.bind(this)}/>
                 <Dialog modal={true} open={this.state.dialogOpen} title="Are you sure you want to delete this post?" actions={dialogActions}/>
             </div>

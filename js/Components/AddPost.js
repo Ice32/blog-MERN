@@ -18,6 +18,10 @@ import {Colors} from 'material-ui/lib/styles';
 import Snackbar from 'material-ui/lib/snackbar';
 import Dialog from 'material-ui/lib/dialog';
 
+import Grid from "react-bootstrap/lib/Grid";
+import Row from "react-bootstrap/lib/Row";
+import Col from "react-bootstrap/lib/Col";
+
 export default class AddPost extends React.Component{
     constructor(props){
         super(props);
@@ -76,28 +80,32 @@ export default class AddPost extends React.Component{
     render(){
         console.log("rendering AddPost component");
         return(
-            <Card>
-                <CardHeader title="Add a new post" titleStyle={{fontSize:"30px"}} avatar={
+            <Grid fluid={true}>
+                    <Col xs={12} sm={12} md={10} lg={9}>
+                        <Card style={{marginTop:"3%", padding:10}}>
+                            <CardHeader title="Add a new post" titleStyle={{fontSize:"30px"}} avatar={
                     <Avatar backgroundColor={Colors.blueGrey500} icon={ <FontIcon className="fa fa-plus"/>}/>
                 }/>
-                <CardText>
-                    <TextField value={this.state.newTitle} onChange={this.titleChange.bind(this)} placeholder="post title"/><br/>
-                    <TextField rowsMax={50} multiLine={true} fullWidth={true} value={this.state.newText} onChange={this.textChange.bind(this)} placeholder="post text"/><br />
-                </CardText>
-                <CardActions>
-                    <Link to="/"><RaisedButton secondary={true} label="Home"/></Link>
-                    <RaisedButton secondary={true} onTouchTap={this.submitNewPost.bind(this)} label="Submit post"/>
-                </CardActions>
-                <Snackbar open={this.state.justAdded} message="Post successfully added, redirecting back to home..." onRequestClose={this.closeSnackbar.bind(this)} bodyStyle={{textAlign:"center"}} autoHideDuration={1300}/>
-                {/*Dialog in case post text length is exceeded*/}
-                <Dialog actions={<RaisedButton primary={true} label="ok" onTouchTap={  () => {this.setState({lengthDialog:false})}          } />} open={this.state.lengthDialog} style={{textAlign:"center"}} onRequestClose={() => { this.setState({lengthDialog:false})}} title="Your post has gotten too long ">
-                    Please make sure not to exceed post character limit of 2000
-                </Dialog>
-                {/*Dialog in case title length is exceeded*/}
-                <Dialog actions={<RaisedButton primary={true} label="ok" onTouchTap={  () => {this.setState({titleLengthDialog:false});}      } />} open={this.state.titleLengthDialog} style={{textAlign:"center"}} onRequestClose={() => { this.setState({titleLengthDialog:false})}} title="Your title has gotten too long ">
-                    Please make sure not to exceed title character limit of 50
-                </Dialog>
-            </Card>
+                            <CardText>
+                                <TextField value={this.state.newTitle} onChange={this.titleChange.bind(this)} placeholder="post title"/><br/>
+                                <TextField rowsMax={50} multiLine={true} fullWidth={true} value={this.state.newText} onChange={this.textChange.bind(this)} placeholder="post text"/><br />
+                            </CardText>
+                            <CardActions>
+                                <Link to="/"><RaisedButton secondary={true} label="Home"/></Link>
+                                <RaisedButton secondary={true} onTouchTap={this.submitNewPost.bind(this)} label="Submit post"/>
+                            </CardActions>
+                            <Snackbar open={this.state.justAdded} message="Post successfully added, redirecting back to home..." onRequestClose={this.closeSnackbar.bind(this)} bodyStyle={{textAlign:"center"}} autoHideDuration={1300}/>
+                            {/*Dialog in case post text length is exceeded*/}
+                            <Dialog actions={<RaisedButton primary={true} label="ok" onTouchTap={  () => {this.setState({lengthDialog:false})}          } />} open={this.state.lengthDialog} style={{textAlign:"center"}} onRequestClose={() => { this.setState({lengthDialog:false})}} title="Your post has gotten too long ">
+                                Please make sure not to exceed post character limit of 2000
+                            </Dialog>
+                            {/*Dialog in case title length is exceeded*/}
+                            <Dialog actions={<RaisedButton primary={true} label="ok" onTouchTap={  () => {this.setState({titleLengthDialog:false});}      } />} open={this.state.titleLengthDialog} style={{textAlign:"center"}} onRequestClose={() => { this.setState({titleLengthDialog:false})}} title="Your title has gotten too long ">
+                                Please make sure not to exceed title character limit of 50
+                            </Dialog>
+                        </Card>
+                    </Col>
+            </Grid>
         )
     }
 }
