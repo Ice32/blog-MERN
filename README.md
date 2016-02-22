@@ -1,4 +1,12 @@
 # blog-MERN
-Example app written in MERN stack (MongodDB, Express, React, NodeJS)
+Example app written in MERN stack (MongodDB, Express, React, NodeJS).
+Also used: React router, Webpack, Material UI.
 
-Any suggestions are welcome
+Usage:
++ git clone
++ npm install
++ bundle using webpack
++ node server.js
+
+
+Any suggestions are welcome!
