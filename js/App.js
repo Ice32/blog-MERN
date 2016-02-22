@@ -5,11 +5,13 @@ import React from "react";
 import {render} from "react-dom";
 import {Router, hashHistory, Route} from "react-router";
 
+//import React components
 import Front from "./Components/Front";
 import AddPost from "./Components/AddPost";
 import Post from "./Components/Post";
 import PostView from "./Components/PostView";
 
+//tapEvent plugin for material ui components
 import injectTapEventPlugin from "react-tap-event-plugin";
 injectTapEventPlugin();
 

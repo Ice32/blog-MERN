@@ -8,13 +8,19 @@ var ObjectID = require("mongodb").ObjectID;
 var bodyParser = require("body-parser");
 
 var app = express();
+
+//global variable to store the database connection
 var db;
 
+//serve static folder
 app.use(express.static("static"));
 app.use(bodyParser.json());
 
 app.get("/api/posts", function(req, res){
     db.collection("posts").find().sort({dateCreated:-1}).toArray(function(err, docs){
+        if(err){
+            return console.error(err);
+        }
         res.json(docs);
     })
 });
@@ -34,49 +40,43 @@ app.post("/api/posts", function(req, res){
 
 app.delete("/api/posts", function(req, res){
     db.collection("posts").removeOne({_id:ObjectID(req.body.id)}, function(err, result){
+        if(err){
+            return console.error(err);
+        }
         res.sendStatus(200);
     });
 });
 
 app.get("/api/posts/:id", function(req, res){
-   db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
-       if(err){
-           console.error(err);
-           res.sendStatus(400);
-       }
-       else{
-           res.json(doc);
-       }
-   })
+    db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
+        if(err){
+            console.error(err);
+            res.sendStatus(400);
+        }
+        else{
+            res.json(doc);
+        }
+    })
 });
 
 app.put("/api/posts/:id", function(req, res){
     let newPost = req.body;
-    if(req.body.text.length > 2000 || req.body.title.length > 50 ){
+    if(newPost.text.length > 2000 || newPost.title.length > 50 ){
         return res.sendStatus(400);
     }
-   db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
-       if(doc.title == req.body.title && doc.text == req.body.text){
-           console.log("not changed");
-           res.sendStatus(304);
-       }
-       else{
-           newPost.dateCreated = doc.dateCreated;
-           db.collection("posts").updateOne({_id:doc._id},newPost);
-           res.sendStatus(200);
-       }
-   })
+    db.collection("posts").find({_id:ObjectID(req.params.id)}).next(function(err, doc){
+        if(doc.title == req.body.title && doc.text == req.body.text){
+            console.log("not changed");
+            return res.sendStatus(304);
+        }
+        newPost.dateCreated = doc.dateCreated;
+        db.collection("posts").updateOne({_id:doc._id},newPost);
+        res.sendStatus(200);
+    })
 });
 
 MongoClient.connect("mongodb://localhost:27017/postdb", function(err, dbConnection){
     db = dbConnection;
-    db.collection("posts").count({}, function(e, count){
-        if(count < 3){
-            for(let i = 0; i < 10; i++ ){
-                db.collection("posts").insertOne({title:"post title", text:"post text post text post text"})
-            }
-        }
-    });
     app.listen(3000, function(){
         console.log("Listening on port 3000");
     });
